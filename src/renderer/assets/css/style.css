@@ -1,0 +1,36 @@
+@import 'tailwindcss';
+
+/* App Header */
+.tw-app-main--header {
+  @apply flex items-center justify-between px-4 py-2;
+}
+.header-left {
+  @apply block;
+}
+.header-right {
+  @apply block;
+}
+/* Main Container */
+.tw-app-main--container {
+  @apply flex h-screen;
+}
+.tw-app-main--sidebar {
+  @apply w-64;
+}
+.tw-app-main--content {
+  @apply flex-1;
+}
+
+/* Components */
+.tw-input--group {
+  @apply block mb-2;
+}
+.tw-input--label {
+  @apply block pb-2 text-gray-600 font-medium text-sm;
+}
+.tw-input--control {
+  @apply block px-4 py-2 rounded border-2 border-gray-300 focus:ring-2 ring-blue-500/50 focus:border-blue-500/70 focus:outline-none focus:placeholder:text-blue-500 placeholder:text-gray-400;
+}
+.button {
+  @apply block px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 text-blue-100 transition-all ease-in-out duration-150 appearance-none focus:outline-none focus:ring-2 ring-blue-500/50;
+}

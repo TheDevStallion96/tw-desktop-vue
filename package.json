@@ -1,0 +1,72 @@
+{
+  "name": "tw-desktop-app",
+  "private": true,
+  "version": "0.0.0",
+  "main": "dist/main/index.cjs",
+  "scripts": {
+    "dev": "vite",
+    "dev:electron": "npm run build:main && concurrently \"npm run dev\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
+    "build": "vue-tsc -b && vite build",
+    "build:main": "tsc -p tsconfig.main.json && mv dist/main/index.js dist/main/index.cjs && mv dist/main/preload.js dist/main/preload.cjs",
+    "build:electron": "npm run build && npm run build:main && electron-builder",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .ts,.vue,.js",
+    "lint:fix": "eslint . --ext .ts,.vue,.js --fix",
+    "format": "prettier --write \"src/**/*.{ts,vue,js,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,vue,js,json,css,md}\"",
+    "check": "npm run lint && npm run format:check"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.16",
+    "electron": "^39.0.0",
+    "electron-builder": "^26.0.12",
+    "tailwindcss": "^4.1.16",
+    "vue": "^3.5.22",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@types/node": "^24.9.2",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/tsconfig": "^0.8.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-vue": "^10.5.1",
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.7",
+    "vue-eslint-parser": "^10.2.0",
+    "vue-tsc": "^3.1.0",
+    "wait-on": "^9.0.1"
+  },
+  "build": {
+    "appId": "com.tw.desktop",
+    "productName": "TW Desktop",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
+  }
+}

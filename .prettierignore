@@ -1,0 +1,24 @@
+# Build outputs
+dist
+dist-electron
+release
+*.cjs
+
+# Dependencies
+node_modules
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
