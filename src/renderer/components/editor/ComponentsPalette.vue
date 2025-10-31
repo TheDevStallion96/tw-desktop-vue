@@ -7,8 +7,12 @@ import type { ElementNode } from '../../types/project';
 const { addElement, currentProject } = useProject();
 const draggedComponent = ref<string | null>(null);
 
-const handleDragStart = (componentType: string) => {
+const handleDragStart = (componentType: string, event: DragEvent) => {
   draggedComponent.value = componentType;
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'copy';
+    event.dataTransfer.setData('component-type', componentType);
+  }
 };
 
 const handleDragEnd = () => {
@@ -56,7 +60,7 @@ const handleComponentClick = (componentType: string) => {
             ? 'border-blue-500'
             : 'border-transparent',
         ]"
-        @dragstart="handleDragStart(component.type)"
+        @dragstart="handleDragStart(component.type, $event)"
         @dragend="handleDragEnd"
         @click="handleComponentClick(component.type)"
       >

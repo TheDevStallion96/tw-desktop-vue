@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useProject } from '../../composables/useProject';
+import { componentDefinitions } from '../../data/components';
 import type { ElementNode } from '../../types/project';
 
 interface Props {
@@ -12,11 +13,14 @@ const props = withDefaults(defineProps<Props>(), {
   isRoot: false,
 });
 
-const { selectedElement, selectElement, removeElement } = useProject();
+const { selectedElement, selectElement, removeElement, addElement } =
+  useProject();
 
 const isSelected = computed(
   () => selectedElement.value?.id === props.element.id
 );
+
+const isDragOver = ref(false);
 
 const handleClick = (event: MouseEvent) => {
   event.stopPropagation();
@@ -28,6 +32,47 @@ const handleDelete = (event: MouseEvent) => {
   if (!props.isRoot) {
     removeElement(props.element.id);
   }
+};
+
+// Drag and drop handlers
+const handleDragOver = (event: DragEvent) => {
+  if (!hasChildren.value) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  isDragOver.value = true;
+};
+
+const handleDragLeave = (event: DragEvent) => {
+  event.stopPropagation();
+  isDragOver.value = false;
+};
+
+const handleDrop = (event: DragEvent) => {
+  if (!hasChildren.value) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  isDragOver.value = false;
+
+  const componentType = event.dataTransfer?.getData('component-type');
+  if (!componentType) return;
+
+  const definition = componentDefinitions.find(
+    (def) => def.type === componentType
+  );
+  if (!definition) return;
+
+  const newElement: ElementNode = {
+    id: window.crypto.randomUUID(),
+    type: definition.type,
+    classes: definition.defaultClasses,
+    children: [],
+    properties: { ...definition.defaultProperties },
+  };
+
+  // Add to this container
+  addElement(newElement, props.element.id);
 };
 
 const renderElement = computed(() => {
@@ -96,11 +141,17 @@ const textContent = computed(() => {
       {
         'outline outline-2 outline-blue-500 outline-offset-2':
           isSelected && !isRoot,
+        'outline outline-2 outline-dashed outline-green-500 outline-offset-2':
+          isDragOver,
         'relative group': !isRoot,
+        'min-h-[50px]': hasChildren && element.children.length === 0,
       },
     ]"
     v-bind="elementProps"
     @click="handleClick"
+    @dragover="handleDragOver"
+    @dragleave="handleDragLeave"
+    @drop="handleDrop"
   >
     <!-- Delete button for selected non-root elements -->
     <button

@@ -107,6 +107,14 @@ export function useProject() {
     }
   };
 
+  const updateProject = (updates: Partial<Project>) => {
+    if (!currentProject.value) return;
+
+    Object.assign(currentProject.value, updates);
+    currentProject.value.updatedAt = new Date().toISOString();
+    isDirty.value = true;
+  };
+
   const selectElement = (element: ElementNode | null) => {
     selectedElement.value = element;
   };
@@ -157,6 +165,7 @@ export function useProject() {
     addElement,
     removeElement,
     updateElement,
+    updateProject,
     selectElement,
     setBreakpoint,
   };

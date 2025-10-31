@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useProject } from '../../composables/useProject';
 import type { Breakpoint } from '../../types/project';
+import { parseTailwindConfig } from '../../utils/tailwindConfig';
 
 const {
   currentProject,
@@ -10,6 +11,7 @@ const {
   saveProject,
   exportProjectJSON,
   importProjectJSON,
+  updateProject,
 } = useProject();
 
 const showExportModal = ref(false);
@@ -59,6 +61,31 @@ const handleImportJSON = () => {
         alert('Project imported successfully!');
       } else {
         alert('Failed to import project. Invalid JSON format.');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+};
+
+const handleImportTailwindConfig = () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.js,.cjs,.mjs,.json';
+  input.onchange = (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const configString = event.target?.result as string;
+      const config = parseTailwindConfig(configString);
+
+      if (config && currentProject.value) {
+        updateProject({ tailwindConfig: JSON.stringify(config) });
+        alert('Tailwind config imported successfully!');
+      } else {
+        alert('Failed to import Tailwind config. Invalid format.');
       }
     };
     reader.readAsText(file);
@@ -271,6 +298,13 @@ const downloadCode = () => {
           @click="handleExportCode"
         >
           🚀 Export Code
+        </button>
+        <button
+          class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 rounded text-sm font-medium transition-colors"
+          title="Import tailwind.config.js"
+          @click="handleImportTailwindConfig"
+        >
+          ⚙️ Import Config
         </button>
       </div>
 
