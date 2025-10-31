@@ -3,8 +3,9 @@ import { ref } from 'vue';
 
 const menuItems = ref([
   { id: 1, name: 'Dashboard', icon: '📊', path: '/' },
-  { id: 2, name: 'Projects', icon: '📁', path: '/projects' },
-  { id: 3, name: 'Settings', icon: '⚙️', path: '/settings' },
+  { id: 2, name: 'Editor', icon: '✏️', path: '/editor' },
+  { id: 3, name: 'Projects', icon: '📁', path: '/projects' },
+  { id: 4, name: 'Settings', icon: '⚙️', path: '/settings' },
 ]);
 </script>
 

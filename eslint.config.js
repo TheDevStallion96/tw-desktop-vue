@@ -64,6 +64,13 @@ export default [
         sourceType: 'module',
         project: './tsconfig.app.json',
       },
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        console: 'readonly',
+        alert: 'readonly',
+      },
     },
     plugins: {
       '@typescript-eslint': tseslint,
@@ -93,7 +100,10 @@ export default [
       },
       globals: {
         window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
         console: 'readonly',
+        alert: 'readonly',
       },
     },
     plugins: {
