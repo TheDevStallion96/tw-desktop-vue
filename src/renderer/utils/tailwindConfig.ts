@@ -22,7 +22,10 @@ export const parseTailwindConfig = (
     // Try to parse as JSON first
     return JSON.parse(configString) as TailwindConfig;
   } catch {
-    // If not JSON, try to extract the config object from a JS file
+    // LIMITATION: This is a simplified parser for basic JavaScript config files.
+    // For complex configs with functions, requires, or advanced JavaScript features,
+    // users should convert their config to JSON format before importing.
+    // A production implementation should use @babel/parser or similar for robust parsing.
     try {
       // Remove any comments
       let cleaned = configString.replace(/\/\*[\s\S]*?\*\//g, '');
@@ -58,6 +61,14 @@ export const formatTailwindConfig = (config: TailwindConfig): string => {
   return JSON.stringify(config, null, 2);
 };
 
+/**
+ * Extracts custom CSS class names from a Tailwind config.
+ * This generates a list of available classes based on the custom theme configuration,
+ * which can be used for class suggestions in the editor.
+ *
+ * @param config - The parsed Tailwind configuration object
+ * @returns Array of CSS class names derived from the custom theme configuration
+ */
 export const extractCustomClasses = (config: TailwindConfig): string[] => {
   const classes: string[] = [];
 

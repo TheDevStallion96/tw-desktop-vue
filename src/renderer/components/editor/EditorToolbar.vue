@@ -156,14 +156,13 @@ const generateHTMLExport = (): string => {
 
   let htmlContent = generateElementHTML(currentProject.value.rootElement);
 
-  const scriptTag = '<script src="https://cdn.tailwindcss.com"></scr' + 'ipt>';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${currentProject.value.name}</title>
-  ${scriptTag}
+  ${'<'}script src="https://cdn.tailwindcss.com"${'><'}/script>
 </head>
 <body>
 ${htmlContent}
