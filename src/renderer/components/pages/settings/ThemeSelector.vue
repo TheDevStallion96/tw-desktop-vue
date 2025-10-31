@@ -1,4 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const settings = ref({
+  theme: 'dark',
+});
+</script>
 
 <template>
   <div>
